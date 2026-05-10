@@ -1101,39 +1101,71 @@ a { -webkit-tap-highlight-color: transparent; }
 </footer>
 
 <script>
-function initCarousel(gridId, dotsId) {
+function initCarousel(gridId, dotsId, interval) {
   if (window.innerWidth > 900) return;
   const grid = document.getElementById(gridId);
   const dotsEl = document.getElementById(dotsId);
   if (!grid || !dotsEl) return;
 
   const items = Array.from(grid.children);
+  let current = 0;
+  let timer = null;
+
   const dots = items.map((_, i) => {
     const btn = document.createElement('button');
     btn.className = 'carousel-dot' + (i === 0 ? ' active' : '');
     btn.setAttribute('aria-label', 'Go to item ' + (i + 1));
     btn.addEventListener('click', () => {
-      grid.scrollTo({ left: items[i].offsetLeft - 20, behavior: 'smooth' });
+      goTo(i);
+      resetTimer();
     });
     dotsEl.appendChild(btn);
     return btn;
   });
 
+  function goTo(idx) {
+    current = (idx + items.length) % items.length;
+    grid.scrollTo({ left: items[current].offsetLeft - 20, behavior: 'smooth' });
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function next() {
+    goTo(current + 1);
+  }
+
+  function startTimer() {
+    timer = setInterval(next, interval);
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    startTimer();
+  }
+
+  // Pause on user touch, resume after
+  grid.addEventListener('touchstart', () => clearInterval(timer), { passive: true });
+  grid.addEventListener('touchend', () => { resetTimer(); }, { passive: true });
+
+  // Sync dot when user manually scrolls
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
         const idx = items.indexOf(entry.target);
-        if (idx !== -1) dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        if (idx !== -1) {
+          current = idx;
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        }
       }
     });
   }, { root: grid, threshold: 0.5 });
 
   items.forEach(item => observer.observe(item));
+  startTimer();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initCarousel('menu-grid', 'menu-dots');
-  initCarousel('reviews-grid', 'reviews-dots');
+  initCarousel('menu-grid', 'menu-dots', 3000);
+  initCarousel('reviews-grid', 'reviews-dots', 3000);
 });
 </script>
 </body>
