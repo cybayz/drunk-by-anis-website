@@ -398,7 +398,7 @@ a { -webkit-tap-highlight-color: transparent; }
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: 16px;
 }
 .juice-card {
   position: relative;
@@ -406,41 +406,44 @@ a { -webkit-tap-highlight-color: transparent; }
   overflow: hidden;
   aspect-ratio: 3/4;
   border: 1px solid rgba(255,255,255,0.05);
-  transition: transform 0.35s, box-shadow 0.35s;
+  background: #0a0a0a;
+  transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
   cursor: pointer;
 }
 .juice-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  transform: translateY(-8px);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,255,0,0.15);
+  border-color: rgba(212,255,0,0.15);
 }
 .juice-card img {
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: center top;
   display: block;
-  transition: transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
 }
-.juice-card:hover img { transform: scale(1.06); }
+.juice-card:hover img { transform: scale(1.05); }
 .juice-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.1) 55%, transparent 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.18) 50%, transparent 100%);
 }
 .juice-card-body {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  padding: 30px 22px 22px;
+  padding: 32px 20px 20px;
 }
 .juice-name {
   font-family: 'Anton', sans-serif;
-  font-size: 26px;
+  font-size: 24px;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--white);
   line-height: 1.05;
 }
 .juice-desc {
-  font-size: 12.5px;
-  color: rgba(255,255,255,0.52);
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
   font-weight: 500;
   margin-top: 5px;
   letter-spacing: 0.5px;
@@ -450,45 +453,13 @@ a { -webkit-tap-highlight-color: transparent; }
   top: 14px; right: 14px;
   background: var(--yellow);
   color: var(--black);
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   padding: 5px 12px;
   border-radius: 30px;
 }
-
-/* Gradient cards for items without photos */
-.juice-card.grad {
-  background: var(--card-bg);
-}
-.grad-art {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 80px;
-}
-.grad-emoji {
-  font-size: 72px;
-  line-height: 1;
-  filter: saturate(1.2);
-  margin-bottom: 14px;
-  transition: transform 0.3s;
-}
-.juice-card:hover .grad-emoji { transform: scale(1.1) translateY(-6px); }
-.grad-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: 22px;
-}
-.glow-mango   { background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(255,180,0,0.12) 0%, transparent 70%); }
-.glow-lime    { background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(100,220,0,0.12) 0%, transparent 70%); }
-.glow-coconut { background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(0,220,200,0.10) 0%, transparent 70%); }
-.glow-guava   { background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(255,80,160,0.10) 0%, transparent 70%); }
 
 /* ── DRINK RESPONSIBLY STRIP ── */
 .responsible-strip {
@@ -884,7 +855,7 @@ a { -webkit-tap-highlight-color: transparent; }
   </div>
   <div class="menu-grid">
 
-    <!-- 1 Watermelon Juice — photo card -->
+    <!-- Row 1 -->
     <div class="juice-card">
       <img src="watermelon-juice.png" alt="Watermelon Juice">
       <div class="juice-card-overlay"></div>
@@ -895,7 +866,6 @@ a { -webkit-tap-highlight-color: transparent; }
       <span class="juice-tag">Signature</span>
     </div>
 
-    <!-- 2 Pineapple Juice — photo card -->
     <div class="juice-card">
       <img src="pineapple-juice.png" alt="Pineapple Juice">
       <div class="juice-card-overlay"></div>
@@ -906,56 +876,41 @@ a { -webkit-tap-highlight-color: transparent; }
       <span class="juice-tag">Must Try</span>
     </div>
 
-    <!-- 3 Mango Madness — gradient card -->
-    <div class="juice-card grad">
-      <div class="grad-glow glow-mango"></div>
-      <div class="grad-art">
-        <div class="grad-emoji">🥭</div>
-      </div>
+    <div class="juice-card">
+      <img src="mango-juice.png" alt="Mango Juice">
       <div class="juice-card-overlay"></div>
       <div class="juice-card-body">
-        <div class="juice-name">Mango Madness</div>
-        <div class="juice-desc">The Golden Rush · Pure Tropical</div>
+        <div class="juice-name">Mango Juice</div>
+        <div class="juice-desc">Very Special · Made with Real Mangoes</div>
       </div>
       <span class="juice-tag">Popular</span>
     </div>
 
-    <!-- 4 Fresh Lime Burst — gradient card -->
-    <div class="juice-card grad">
-      <div class="grad-glow glow-lime"></div>
-      <div class="grad-art">
-        <div class="grad-emoji">🍋</div>
-      </div>
+    <!-- Row 2 -->
+    <div class="juice-card">
+      <img src="strawberry-juice.png" alt="Strawberry Milkshake">
       <div class="juice-card-overlay"></div>
       <div class="juice-card-body">
-        <div class="juice-name">Lime Burst</div>
-        <div class="juice-desc">Zesty & Sharp · Ice Cold</div>
+        <div class="juice-name">Strawberry Shake</div>
+        <div class="juice-desc">With Chia Seeds · Drunk Black</div>
       </div>
     </div>
 
-    <!-- 5 Coconut Royale — gradient card -->
-    <div class="juice-card grad">
-      <div class="grad-glow glow-coconut"></div>
-      <div class="grad-art">
-        <div class="grad-emoji">🥥</div>
-      </div>
+    <div class="juice-card">
+      <img src="orange-juice.png" alt="Orange Juice">
       <div class="juice-card-overlay"></div>
       <div class="juice-card-body">
-        <div class="juice-name">Coconut Royale</div>
-        <div class="juice-desc">Smooth & Tropical · Kerala's Own</div>
+        <div class="juice-name">Orange Juice</div>
+        <div class="juice-desc">Smooth · Fruity · Natural</div>
       </div>
     </div>
 
-    <!-- 6 Guava Punch — gradient card -->
-    <div class="juice-card grad">
-      <div class="grad-glow glow-guava"></div>
-      <div class="grad-art">
-        <div class="grad-emoji">🍈</div>
-      </div>
+    <div class="juice-card">
+      <img src="lime-juice.png" alt="Lime Juice">
       <div class="juice-card-overlay"></div>
       <div class="juice-card-body">
-        <div class="juice-name">Guava Punch</div>
-        <div class="juice-desc">Bold & Refreshing · Daily Fresh</div>
+        <div class="juice-name">Lime Juice</div>
+        <div class="juice-desc">La Folie · Zesty & Refreshing</div>
       </div>
     </div>
 
@@ -1063,10 +1018,10 @@ a { -webkit-tap-highlight-color: transparent; }
       <h4>Our Juices</h4>
       <p>Watermelon Juice</p>
       <p>Pineapple Juice</p>
-      <p>Mango Madness</p>
-      <p>Lime Burst</p>
-      <p>Coconut Royale</p>
-      <p>Guava Punch</p>
+      <p>Mango Juice</p>
+      <p>Strawberry Shake</p>
+      <p>Orange Juice</p>
+      <p>Lime Juice</p>
     </div>
     <div class="footer-col">
       <h4>Contact</h4>
