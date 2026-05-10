@@ -219,24 +219,23 @@ a { -webkit-tap-highlight-color: transparent; }
   border-radius: 2px;
   animation: scrollBob 2s infinite;
 }
-.hero-bottles {
-  margin-top: 60px;
-  display: flex;
-  gap: 40px;
-  justify-content: center;
-  align-items: flex-end;
+.hero-poster {
+  margin-top: 56px;
+  width: clamp(280px, 38vw, 520px);
   animation: fadeUp 1s 0.8s both;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(212,255,0,0.14), 0 0 0 1px rgba(212,255,0,0.1);
+  transition: transform 0.4s, box-shadow 0.4s;
 }
-.hero-bottle {
-  width: clamp(120px, 14vw, 200px);
-  filter: drop-shadow(0 20px 60px rgba(212,255,0,0.12));
-  transition: transform 0.4s;
+.hero-poster:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 36px 100px rgba(212,255,0,0.22), 0 0 0 1px rgba(212,255,0,0.18);
 }
-.hero-bottle:hover { transform: translateY(-10px) scale(1.03); }
-.hero-bottle.left { transform: rotate(-6deg); }
-.hero-bottle.right { transform: rotate(5deg); }
-.hero-bottle.left:hover { transform: rotate(-6deg) translateY(-10px) scale(1.03); }
-.hero-bottle.right:hover { transform: rotate(5deg) translateY(-10px) scale(1.03); }
+.hero-poster img {
+  width: 100%;
+  display: block;
+}
 
 @keyframes scrollBob { 0%,100%{opacity:1;transform:translateY(0)} 50%{opacity:0;transform:translateY(7px)} }
 @keyframes fadeUp {
@@ -807,9 +806,8 @@ a { -webkit-tap-highlight-color: transparent; }
     <a href="#menu" class="btn-primary">Explore Menu</a>
     <a href="https://maps.app.goo.gl/mCMKfNsEdEygx7bU7" target="_blank" class="btn-outline">Visit Us →</a>
   </div>
-  <div class="hero-bottles">
-    <img src="watermelon-juice.png" alt="Watermelon Juice" class="hero-bottle left">
-    <img src="pineapple-juice.png" alt="Pineapple Juice" class="hero-bottle right">
+  <div class="hero-poster">
+    <img src="hero-poster.png" alt="Drunk Juice Shop">
   </div>
   <div class="hero-scroll">
     <div class="scroll-mouse"></div>
