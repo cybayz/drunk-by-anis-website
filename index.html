@@ -722,19 +722,76 @@ a { -webkit-tap-highlight-color: transparent; }
 .footer-bottom a { color: rgba(255,255,255,0.2); text-decoration: none; }
 .footer-bottom a:hover { color: var(--yellow); }
 
+/* ── CAROUSEL DOTS ── */
+.carousel-dots {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  padding: 18px 20px 0;
+}
+.carousel-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+  flex-shrink: 0;
+}
+.carousel-dot.active {
+  background: var(--yellow);
+  width: 22px;
+  border-radius: 4px;
+}
+
 /* ── MOBILE ── */
 @media (max-width: 900px) {
   .navbar { width: 94%; padding: 10px 16px; }
   .navbar-links { display: none; }
-  .hero-bottles { gap: 20px; }
-  .hero-bottle { width: clamp(90px, 22vw, 140px); }
   .about-section { grid-template-columns: 1fr; gap: 48px; padding: 70px 20px; }
   .about-visual { display: none; }
-  .menu-section { padding: 70px 20px; }
+
+  /* Menu carousel */
+  .menu-section { padding: 70px 0; }
+  .menu-section .section-head { padding: 0 20px; margin-bottom: 30px; }
+  .menu-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    padding: 4px 20px 4px;
+    scrollbar-width: none;
+  }
+  .menu-grid::-webkit-scrollbar { display: none; }
+  .juice-card {
+    flex: 0 0 72vw;
+    scroll-snap-align: start;
+    aspect-ratio: 3/4;
+  }
+  .carousel-dots { display: flex; }
+
+  /* Reviews carousel */
+  .reviews-section { padding: 70px 0; }
+  .reviews-section .section-head { padding: 0 20px; }
+  .reviews-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    padding: 4px 20px 4px;
+    scrollbar-width: none;
+  }
+  .reviews-grid::-webkit-scrollbar { display: none; }
+  .review-card {
+    flex: 0 0 85vw;
+    scroll-snap-align: start;
+  }
+
   .section-head { flex-direction: column; align-items: flex-start; gap: 14px; }
-  .menu-grid { grid-template-columns: 1fr 1fr; }
-  .reviews-section { padding: 70px 20px; }
-  .reviews-grid { grid-template-columns: 1fr; }
   .cta-banner { flex-direction: column; text-align: center; padding: 70px 20px; }
   .cta-text p { margin: 0 auto; }
   .address-block { justify-content: center; }
@@ -743,7 +800,7 @@ a { -webkit-tap-highlight-color: transparent; }
   .footer-brand > p { max-width: 100%; }
 }
 @media (max-width: 540px) {
-  .menu-grid { grid-template-columns: 1fr; }
+  .juice-card { flex: 0 0 82vw; }
   .features-grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -853,7 +910,7 @@ a { -webkit-tap-highlight-color: transparent; }
       <h2>Our Signature<br>Juices</h2>
     </div>
   </div>
-  <div class="menu-grid">
+  <div class="menu-grid" id="menu-grid">
 
     <!-- Row 1 -->
     <div class="juice-card">
@@ -915,6 +972,7 @@ a { -webkit-tap-highlight-color: transparent; }
     </div>
 
   </div>
+  <div class="carousel-dots" id="menu-dots"></div>
 </section>
 
 <!-- DRINK RESPONSIBLY STRIP -->
@@ -930,7 +988,7 @@ a { -webkit-tap-highlight-color: transparent; }
     <span class="eyebrow">Customer Love</span>
     <h2>What People Say</h2>
   </div>
-  <div class="reviews-grid">
+  <div class="reviews-grid" id="reviews-grid">
     <div class="review-card">
       <div class="review-stars">★★★★★</div>
       <div class="review-quote-mark">"</div>
@@ -950,6 +1008,7 @@ a { -webkit-tap-highlight-color: transparent; }
       <span class="reviewer">— Ravi, Kollam</span>
     </div>
   </div>
+  <div class="carousel-dots" id="reviews-dots"></div>
 </section>
 
 <!-- CTA BANNER -->
@@ -1038,5 +1097,41 @@ a { -webkit-tap-highlight-color: transparent; }
   </div>
 </footer>
 
+<script>
+function initCarousel(gridId, dotsId) {
+  if (window.innerWidth > 900) return;
+  const grid = document.getElementById(gridId);
+  const dotsEl = document.getElementById(dotsId);
+  if (!grid || !dotsEl) return;
+
+  const items = Array.from(grid.children);
+  const dots = items.map((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    btn.setAttribute('aria-label', 'Go to item ' + (i + 1));
+    btn.addEventListener('click', () => {
+      grid.scrollTo({ left: items[i].offsetLeft - 20, behavior: 'smooth' });
+    });
+    dotsEl.appendChild(btn);
+    return btn;
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        const idx = items.indexOf(entry.target);
+        if (idx !== -1) dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { root: grid, threshold: 0.5 });
+
+  items.forEach(item => observer.observe(item));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initCarousel('menu-grid', 'menu-dots');
+  initCarousel('reviews-grid', 'reviews-dots');
+});
+</script>
 </body>
 </html>
